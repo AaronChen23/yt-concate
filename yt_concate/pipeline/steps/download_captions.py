@@ -1,0 +1,46 @@
+import os
+# import yt_dlp
+from youtube_transcript_api import YouTubeTranscriptApi
+from .step import Step
+from .step import StepException
+import time
+class DownloadCaptions(Step):
+    def process(self, data, inputs, utils):
+        # ydl_opts = {
+        #     'writesubtitles': True,
+        #     'writeautomaticsub': True,
+        #     'skip_download': True,
+        #     'subtitleslangs': ['en'],
+        # }
+        start = time.time()
+        for url in data:
+            print("downloading caption for", url)
+            if utils.caption_file_exists(url):
+                print("found existing caption file")
+                continue
+            try:
+                # with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                #     ydl.download([url])
+                # srt = YouTubeTranscriptApi.get_transcript("SW14tOda_kI")
+                id = url.split("watch?v=")[-1]
+                # print(id)
+                srt = YouTubeTranscriptApi.get_transcript(id)  #這裡的srt為list
+                # prints the result
+                print(srt)
+            except (KeyError, AttributeError):
+                print("Error when downloading caption for", url)
+                continue
+
+            # source = YoutubeDL(url)
+            # en_caption = source.captions.get_by_language_code('a.en')
+            # en_caption_convert_to_srt = (en_caption.generate_srt_captions())
+            # print(en_caption_convert_to_srt)
+
+            # # save the caption to a file named Output.txt
+            text_file = open(utils.get_caption_filepath(url), "w", encoding="utf-8")
+            srt_str = ",".join(str(element) for element in srt)
+            text_file.write(srt_str)     #.write()只能對str作用
+            text_file.close()
+            # break
+        end = time.time()
+        print("took", end - start, "second")
