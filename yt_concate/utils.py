@@ -28,6 +28,13 @@ class Utils:
     def get_caption_filepath(self, url):
         return os.path.join(CAPTIONS_DIR, self.get_video_id_from_url(url) + ".txt")
 
+    def get_video_filepath(self):
+        return os.path.join(VIDEOS_DIR, self.id + ".mp4")
+
     def caption_file_exists(self, url):
         path = self.get_caption_filepath(url)
         return os.path.exists(path) and os.path.getsize(path) > 0
+
+    # def video_file_exists(self):  #寫不出來
+    #     path = self.get_video_filepath()
+    #     return os.path.exists(path) and os.path.getsize(path) > 0

@@ -13,7 +13,7 @@ class DownloadCaptions(Step):
         #     'subtitleslangs': ['en'],
         # }
         start = time.time()
-        for url in data:
+        for url in data:   #data = video_links
             print("downloading caption for", url)
             if utils.caption_file_exists(url):
                 print("found existing caption file")
@@ -38,9 +38,17 @@ class DownloadCaptions(Step):
 
             # # save the caption to a file named Output.txt
             text_file = open(utils.get_caption_filepath(url), "w", encoding="utf-8")
-            srt_str = ",".join(str(element) for element in srt)
-            text_file.write(srt_str)     #.write()只能對str作用
+            # with open("subtitles.txt", "w") as f:
+            # srt_str = ",".join(str(element) for element in srt)
+            # text_file.write(str(srt))     #.write()只能對str作用
+            for i in srt:
+                text_file.write(i["text"])
+
+                # text_file.write("{}\n".format(i))
+            # for i in srt:
+            #     f.write("{}\n".format(i))
             text_file.close()
             # break
         end = time.time()
         print("took", end - start, "second")
+        # return srt
