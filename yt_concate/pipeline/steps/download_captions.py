@@ -1,5 +1,6 @@
 import os
 # import yt_dlp
+import json
 from youtube_transcript_api import YouTubeTranscriptApi
 from .step import Step
 from .step import StepException
@@ -27,6 +28,10 @@ class DownloadCaptions(Step):
                 srt = YouTubeTranscriptApi.get_transcript(id)  #這裡的srt為list
                 # prints the result
                 print(srt)
+                text = []
+                for i in srt:  # i ={}, dict # srt = [{}, {}, ...]
+                    print(i)
+                    print(type(i))
             except (KeyError, AttributeError):
                 print("Error when downloading caption for", url)
                 continue
@@ -41,8 +46,11 @@ class DownloadCaptions(Step):
             # with open("subtitles.txt", "w") as f:
             # srt_str = ",".join(str(element) for element in srt)
             # text_file.write(str(srt))     #.write()只能對str作用
-            for i in srt:
-                text_file.write(i["text"])
+            text_file.write(json.dumps(srt))
+            # for i in srt:
+            #     text_file.write(json.dumps(i))
+                # text_file.write(i["start"])
+                # text_file.write(i["duration"])
 
                 # text_file.write("{}\n".format(i))
             # for i in srt:

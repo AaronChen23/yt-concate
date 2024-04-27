@@ -5,14 +5,17 @@ class Search(Step):
     def process(self, data, inputs, utils):
         found = []
         search_word = inputs["search_word"]
-        for caption_file in data:           # caption_file = xxxxxx.txt  # data = {caption_file: [],...}
-            captions = data[caption_file]   #captions = []
+        for caption_file in data:           # caption_file = xxxxxx.txt  # data = {caption_file: [{},{},...],...}
+            captions = data[caption_file]   #captions = [{},{},...] --> 原始的srt
+            print(captions)
+            print(type(captions))
+
             for caption in captions:        #caption = {}
-                # print(caption)
-                # print(type(caption))
-                if search_word in caption:
-                    # print(caption_file, "found word")
-                    f = [caption_file, captions]
+                print(caption)
+                print(type(caption))
+                if search_word in caption["text"]:
+                    print(caption_file, "found word")
+                    f = [caption_file, caption]
                     # print(f)
                     found.append(f)
         print(found)
